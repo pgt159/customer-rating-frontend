@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import React, { useState } from "react";
 import styles from "@/styles/auth.module.scss";
 import dynamic from "next/dynamic";

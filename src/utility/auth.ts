@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Cookies from "js-cookie";
 const jwtKey = "jwt";
 

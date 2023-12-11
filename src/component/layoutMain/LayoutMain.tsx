@@ -1,15 +1,16 @@
 import React, { Fragment, useEffect, useState } from "react";
 import Header from "../header/Header";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, TypedUseSelectorHook } from "react-redux";
 import { getToken } from "@/utility/auth";
 import { getMe } from "@/store/auth/authSlice";
+import { RootState, useAppSelector } from "@/store/configureStore";
 
 interface ILayoutMainProps {
   children?: React.ReactNode;
 }
 
 function LayoutMain({ children }: ILayoutMainProps) {
-  const { isAuth } = useSelector((state) => state.auth);
+  const { isAuth } = useAppSelector((state: { auth: any }) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {

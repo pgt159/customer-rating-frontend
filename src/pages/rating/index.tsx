@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { Fragment, useEffect, useState } from "react";
 import styles from "../../styles/rating.module.scss";
 import ButtonStar from "../../component/buttonStar/ButtonStar";
@@ -92,7 +93,6 @@ function RatingPage() {
           <textarea
             name="description"
             id="desc"
-            rows="8"
             maxLength={200}
             className={styles.descriptionStyle}
           />

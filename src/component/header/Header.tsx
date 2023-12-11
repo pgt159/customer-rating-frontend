@@ -3,12 +3,13 @@ import styles from "./styles.module.scss";
 import Router from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import { logOut } from "@/store/auth/authSlice";
+import { useAppSelector } from "@/store/configureStore";
 
 function Header({}) {
   const dispatch = useDispatch();
-  const { isAuth, userName } = useSelector((state) => {
-    return state?.auth;
-  });
+  const { isAuth, userName } = useAppSelector(
+    (state: { auth: any }) => state.auth
+  );
 
   const goLogin = () => {
     Router.push({

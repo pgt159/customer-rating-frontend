@@ -9,6 +9,10 @@ import { removeToken, saveToken } from "@/utility/auth";
 import { updateUser } from "./authSlice";
 import Router from "next/router";
 
+interface IApiReturn {
+  status: number;
+  data: any;
+}
 export function* authLogoutHandler() {
   console.log("removing");
   removeToken();
@@ -27,7 +31,7 @@ export function* authLoginHandler({
   };
 }) {
   try {
-    const res = yield call(loginService, payload);
+    const res: IApiReturn = yield call(loginService, payload);
     if (res.status === 200) {
       toast.success(`Login successfully, hello ${res.data.data.user.name}`);
       saveToken({ jwt: res.data.token });
@@ -53,7 +57,7 @@ export function* authSignUpHandler({
   };
 }) {
   try {
-    const res = yield call(signUpService, payload);
+    const res: IApiReturn = yield call(signUpService, payload);
     if (res.status === 201) {
       toast("Sign up successfully");
     }
@@ -65,7 +69,7 @@ export function* authSignUpHandler({
 
 export function* authFetchMe({ payload }: { payload: string }) {
   try {
-    const res = yield call(fetchMeService, payload);
+    const res: IApiReturn = yield call(fetchMeService, payload);
     if (res.status === 200) {
       yield put(updateUser({ ...res.data, isAuth: true }));
     } else if (res.status === 401) {

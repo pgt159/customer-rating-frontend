@@ -4,9 +4,10 @@ import styles from "@/styles/home.module.scss";
 import Button from "@/component/button/Button";
 import Router from "next/router";
 import { useSelector } from "react-redux";
+import { useAppSelector } from "@/store/configureStore";
 
 export default function Home() {
-  const { isAuth } = useSelector((state) => state.auth);
+  const { isAuth } = useAppSelector((state: { auth: any }) => state.auth);
   const onGoRating = () => {
     Router.push("/rating");
   };

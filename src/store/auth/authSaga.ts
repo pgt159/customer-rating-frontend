@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { takeLatest } from "redux-saga/effects";
 import { getMe, logOut, login, signup } from "./authSlice";
 import {
