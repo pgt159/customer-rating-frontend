@@ -14,6 +14,8 @@ const queryClient = new QueryClient();
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+  display: "swap",
+  adjustFontFallback: false,
 });
 
 export default function App({ Component, pageProps }: AppProps) {
