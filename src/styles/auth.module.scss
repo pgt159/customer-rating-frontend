@@ -1,0 +1,47 @@
+.mainWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5e7ed;
+  height: 100vh;
+  .loginWrapper {
+    width: 20%;
+    // height: 300px;
+    min-width: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 8px;
+    background-color: #eda5c6;
+    border: 2px solid #fff;
+    border-radius: 8px;
+    padding: 20px;
+    color: #fff;
+    .title {
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .loginButton {
+      width: 100%;
+      background-color: #d93381;
+      transition: 0.3s ease all;
+      color: #fff;
+      padding: 5px;
+      padding-inline: 10px;
+      border-radius: 5px;
+      border: 1px solid #fff;
+      &:hover {
+        background-color: #e25798;
+        color: #fff;
+      }
+    }
+    .fieldTitle {
+      color: #fff;
+      font-size: 18px;
+    }
+    .input {
+      margin-top: 8px;
+    }
+  }
+}

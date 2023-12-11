@@ -1,0 +1,17 @@
+.buttonStyle {
+  border-radius: 8px;
+  background-color: #ebf5ff;
+  padding: 10px 8px;
+  width: 100px;
+  .titleStyle {
+    color: #0080ff;
+    transition: 0.3s ease all;
+  }
+  transition: 0.3s ease all;
+  &:hover {
+    background-color: #0080ff;
+    .titleStyle {
+      color: #fff;
+    }
+  }
+}

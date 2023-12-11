@@ -1,0 +1,28 @@
+.headerWrapper {
+  padding-block: 15px;
+  width: 100%;
+  height: 50px;
+  background: #f291a3;
+  color: #fff;
+  padding-inline: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  .logo {
+    font-weight: 700;
+  }
+  .authWrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    .authButton {
+      padding-inline: 5px;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
