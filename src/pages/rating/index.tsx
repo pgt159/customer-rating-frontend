@@ -19,38 +19,6 @@ function RatingPage() {
   const [ratingPoint, setRatingPoint] = useState<number>(0);
   const [ratingId, setRatingId] = useState<string>(null);
 
-  useEffect(() => {
-    const isLogin = localStorage.getItem("authentication") || getToken();
-    if (!isLogin) {
-      Router.push("/auth");
-    }
-
-    const listEl = Array.from(document.querySelectorAll(".button-star"));
-    if (listEl && listEl.length > 0) {
-      setListButton(listEl);
-    }
-  }, []);
-
-  useEffect(() => {
-    const getTodayRating = async () => {
-      try {
-        const response = await getTodayRatingService();
-        if (response.status == 200 && response?.data?.data?.length) {
-          const data = response?.data?.data[0];
-          setRatingPoint(data.rating);
-          setRatingId(data._id);
-          onHover(null, data.rating);
-          onMouseOut({ number: data.rating });
-          const descriptionEl = document.querySelector("#desc");
-          descriptionEl.value = data.description;
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getTodayRating();
-  }, [listButton, onHover, onMouseOut]);
-
   const onHover = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>, number) => {
       const elId = e?.target?.dataset?.id || number;
@@ -111,6 +79,39 @@ function RatingPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const isLogin = localStorage.getItem("authentication") || getToken();
+    if (!isLogin) {
+      Router.push("/auth");
+    }
+
+    const listEl = Array.from(document.querySelectorAll(".button-star"));
+    if (listEl && listEl.length > 0) {
+      setListButton(listEl);
+    }
+  }, []);
+
+  useEffect(() => {
+    const getTodayRating = async () => {
+      try {
+        const response = await getTodayRatingService();
+        if (response.status == 200 && response?.data?.data?.length) {
+          const data = response?.data?.data[0];
+          setRatingPoint(data.rating);
+          setRatingId(data._id);
+          onHover(null, data.rating);
+          onMouseOut({ number: data.rating });
+          const descriptionEl = document.querySelector("#desc");
+          descriptionEl.value = data.description;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getTodayRating();
+  }, [listButton, onHover, onMouseOut]);
+
   return (
     <LayoutMain>
       <div className={styles.wrapper}>
