@@ -18,6 +18,7 @@ function Button({ onClick, title, loading, ...props }: IButton) {
       {...props}
       style={{
         cursor: loading || props.disabled ? "not-allowed" : "pointer",
+        opacity: loading || props.disabled ? 0.7 : 1,
       }}
     >
       {loading ? <div></div> : null}

@@ -24,7 +24,12 @@ export default function App({ Component, pageProps }: AppProps) {
     <ReduxProvider>
       <ConfigProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
-          <ToastContainer />
+          <ToastContainer
+            autoClose={100}
+            hideProgressBar={false}
+            closeOnClick
+            limit={1}
+          />
           <div className={poppins.className}>
             <Component {...pageProps} />
           </div>

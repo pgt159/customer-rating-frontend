@@ -14,6 +14,7 @@ import { getToken } from "@/utility/auth";
 import { toast } from "react-toastify";
 
 function RatingPage() {
+  const [loading, setLoading] = useState(false);
   const [listButton, setListButton] = useState<Element[]>([]);
   const [ratingPoint, setRatingPoint] = useState<number>(0);
   const [ratingId, setRatingId] = useState<string>(null);
@@ -83,6 +84,7 @@ function RatingPage() {
   };
 
   const onSubmit = async () => {
+    setLoading(true);
     try {
       const desc = document.querySelector("#desc")?.value?.trim() || null;
       if (!ratingPoint) {
@@ -101,39 +103,45 @@ function RatingPage() {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
   return (
     <LayoutMain>
       <div className={styles.wrapper}>
-        <span className={styles.title}>Hey there, how was your day?</span>
-        <div className={styles.starWrapper}>
-          {Array(5)
-            .fill(0)
-            .map((star, index) => (
-              <ButtonStar
-                key={index}
-                onHover={onHover}
-                id={index + 1}
-                onMouseOut={onMouseOut}
-                onRating={onRating}
-              />
-            ))}
-        </div>
-        <div className={styles.descriptionWrapper}>
-          <span className={styles.descriptionTitle}>Description</span>
-          <textarea
-            name="description"
-            id="desc"
-            maxLength={200}
-            className={styles.descriptionStyle}
+        <div className={styles.contentWrapper}>
+          <span className={styles.title}>Hey there, how was your day?</span>
+          <div className={styles.starWrapper}>
+            {Array(5)
+              .fill(0)
+              .map((star, index) => (
+                <ButtonStar
+                  key={index}
+                  onHover={onHover}
+                  id={index + 1}
+                  onMouseOut={onMouseOut}
+                  onRating={onRating}
+                />
+              ))}
+          </div>
+          <div className={styles.descriptionWrapper}>
+            <span className={styles.descriptionTitle}>Description</span>
+            <textarea
+              name="description"
+              id="desc"
+              maxLength={200}
+              className={styles.descriptionStyle}
+              rows={5}
+            />
+          </div>
+          <Button
+            onClick={onSubmit}
+            title="Submit"
+            className={styles.submitButton}
+            loading={loading}
           />
         </div>
-        <Button
-          onClick={onSubmit}
-          title="Submit"
-          className={styles.submitButton}
-        />
       </div>
     </LayoutMain>
   );
