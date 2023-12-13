@@ -9,6 +9,7 @@ import { ConfigProvider } from "antd";
 import { Poppins } from "next/font/google";
 import theme from "@/theme/themeConfig";
 import { ReduxProvider } from "../store/provider";
+import Meta from "@/component/meta/Meta";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ export default function App({ Component, pageProps }: AppProps) {
             limit={1}
           />
           <div className={poppins.className}>
+            <Meta />
             <Component {...pageProps} />
           </div>
         </QueryClientProvider>

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
 import styles from "../../styles/rating.module.scss";
 import ButtonStar from "../../component/buttonStar/ButtonStar";
 import Button from "../../component/button/Button";
@@ -32,48 +32,52 @@ function RatingPage() {
   }, []);
 
   useEffect(() => {
+    const getTodayRating = async () => {
+      try {
+        const response = await getTodayRatingService();
+        if (response.status == 200 && response?.data?.data?.length) {
+          const data = response?.data?.data[0];
+          setRatingPoint(data.rating);
+          setRatingId(data._id);
+          onHover(null, data.rating);
+          onMouseOut({ number: data.rating });
+          const descriptionEl = document.querySelector("#desc");
+          descriptionEl.value = data.description;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
     getTodayRating();
-  }, [listButton]);
+  }, [listButton, onHover, onMouseOut]);
 
-  const getTodayRating = async () => {
-    try {
-      const response = await getTodayRatingService();
-      if (response.status == 200 && response?.data?.data?.length) {
-        const data = response?.data?.data[0];
-        setRatingPoint(data.rating);
-        setRatingId(data._id);
-        onHover(null, data.rating);
-        onMouseOut({ number: data.rating });
-        const descriptionEl = document.querySelector("#desc");
-        descriptionEl.value = data.description;
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const onHover = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>, number) => {
+      const elId = e?.target?.dataset?.id || number;
+      listButton.forEach((item) => {
+        const itemId = item.dataset.id;
 
-  const onHover = (e: React.MouseEvent<HTMLButtonElement>, number) => {
-    const elId = e?.target?.dataset?.id || number;
-    listButton.forEach((item) => {
-      const itemId = item.dataset.id;
-
-      if (parseInt(itemId || -1) <= parseInt(elId || 0)) {
-        item.children[0].children[0].setAttribute("fill", "#B72EF2");
-        item.children[0].children[0].setAttribute("stroke", "#F2B6E2");
-      }
-    });
-  };
-
-  const onMouseOut = ({ number }: { number?: number }) => {
-    listButton.forEach((item) => {
-      const elId = parseInt(item.dataset.id);
-      if (elId > (number || ratingPoint || -1)) {
-        const path = item.children[0].children[0];
-        path.removeAttribute("fill");
-        path.setAttribute("stroke", "#F2B6E2");
-      }
-    });
-  };
+        if (parseInt(itemId || -1) <= parseInt(elId || 0)) {
+          item.children[0].children[0].setAttribute("fill", "#B72EF2");
+          item.children[0].children[0].setAttribute("stroke", "#F2B6E2");
+        }
+      });
+    },
+    [listButton]
+  );
+  const onMouseOut = useCallback(
+    ({ number }: { number?: number }) => {
+      listButton.forEach((item) => {
+        const elId = parseInt(item.dataset.id);
+        if (elId > (number || ratingPoint || -1)) {
+          const path = item.children[0].children[0];
+          path.removeAttribute("fill");
+          path.setAttribute("stroke", "#F2B6E2");
+        }
+      });
+    },
+    [listButton, ratingPoint]
+  );
 
   const onRating = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (e) {
