@@ -43,3 +43,20 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .homeWrapper {
+    padding-inline: 40px;
+    .sloganWrapper {
+      .subSlogan {
+        margin-bottom: 20px;
+      }
+      .ratingButton {
+        font-size: 22px;
+      }
+      .smallSlogan {
+        font-size: 14px;
+      }
+    }
+  }
+}

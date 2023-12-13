@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { call, put } from "redux-saga/effects";
 import {
   fetchMeService,
@@ -8,18 +9,15 @@ import { toast } from "react-toastify";
 import { removeToken, saveToken } from "@/utility/auth";
 import { updateUser } from "./authSlice";
 import Router from "next/router";
-
+import ApiMethod from "@/utility/ApiMethod";
 interface IApiReturn {
   status: number;
   data: any;
 }
 export function* authLogoutHandler() {
-  console.log("removing");
   removeToken();
-  localStorage.removeItem("authentication");
-  Router.push({
-    pathname: "/",
-  });
+  localStorage.clear();
+  window.location.href = "/";
 }
 
 export function* authLoginHandler({
@@ -36,6 +34,9 @@ export function* authLoginHandler({
       toast.success(`Login successfully, hello ${res.data.data.user.name}`);
       saveToken({ jwt: res.data.token });
       localStorage.setItem("authentication", `Bearer ${res.data.token}`);
+      ApiMethod.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${res.data.token}`;
       yield put(updateUser({ ...res.data, isAuth: true }));
       Router.push({
         pathname: "/",

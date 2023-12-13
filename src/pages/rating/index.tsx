@@ -3,31 +3,56 @@ import React, { Fragment, useEffect, useState } from "react";
 import styles from "../../styles/rating.module.scss";
 import ButtonStar from "../../component/buttonStar/ButtonStar";
 import Button from "../../component/button/Button";
-import { createRating } from "@/store/services/rating.services";
+import {
+  createRating,
+  getTodayRatingService,
+  updateRating,
+} from "@/store/services/rating.services";
 import LayoutMain from "@/component/layoutMain/LayoutMain";
-import { useSelector } from "react-redux";
 import Router from "next/router";
 import { getToken } from "@/utility/auth";
+import { toast } from "react-toastify";
+
 function RatingPage() {
   const [listButton, setListButton] = useState<Element[]>([]);
   const [ratingPoint, setRatingPoint] = useState<number>(0);
+  const [ratingId, setRatingId] = useState<string>(null);
 
   useEffect(() => {
     const isLogin = localStorage.getItem("authentication") || getToken();
     if (!isLogin) {
       Router.push("/auth");
     }
-  }, []);
 
-  useEffect(() => {
     const listEl = Array.from(document.querySelectorAll(".button-star"));
     if (listEl && listEl.length > 0) {
       setListButton(listEl);
     }
   }, []);
 
-  const onHover = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const elId = e.target.dataset.id;
+  useEffect(() => {
+    getTodayRating();
+  }, [listButton]);
+
+  const getTodayRating = async () => {
+    try {
+      const response = await getTodayRatingService();
+      if (response.status == 200 && response?.data?.data?.length) {
+        const data = response?.data?.data[0];
+        setRatingPoint(data.rating);
+        setRatingId(data._id);
+        onHover(null, data.rating);
+        onMouseOut({ number: data.rating });
+        const descriptionEl = document.querySelector("#desc");
+        descriptionEl.value = data.description;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onHover = (e: React.MouseEvent<HTMLButtonElement>, number) => {
+    const elId = e?.target?.dataset?.id || number;
     listButton.forEach((item) => {
       const itemId = item.dataset.id;
 
@@ -63,10 +88,17 @@ function RatingPage() {
       if (!ratingPoint) {
         return alert("Không chấp nhận 0 sao vì Thuận luôn có sao");
       }
-      const result = await createRating({
+      const type = ratingId ? "update" : "create";
+      const result = await (type === "update" ? updateRating : createRating)({
         description: desc,
         rating: ratingPoint,
+        id: ratingId,
       });
+      if (result.status === 200 || result.status === 201) {
+        toast.success(
+          `Your feeling has been ${type === "create" ? "created" : "updated"}`
+        );
+      }
     } catch (error) {
       console.log(error);
     }
@@ -74,7 +106,7 @@ function RatingPage() {
   return (
     <LayoutMain>
       <div className={styles.wrapper}>
-        <span className={styles.title}>Hey there, how was your day</span>
+        <span className={styles.title}>Hey there, how was your day?</span>
         <div className={styles.starWrapper}>
           {Array(5)
             .fill(0)

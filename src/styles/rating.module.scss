@@ -53,3 +53,11 @@
     background-color: #f7a5b4;
   }
 }
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 32px;
+    font-weight: 600;
+    color: #ada2f2;
+  }
+}
