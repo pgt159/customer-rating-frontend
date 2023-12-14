@@ -10,6 +10,7 @@ import { removeToken, saveToken } from "@/utility/auth";
 import { updateUser } from "./authSlice";
 import Router from "next/router";
 import ApiMethod from "@/utility/ApiMethod";
+import { toggleLoading } from "../loading/loadingSlice";
 interface IApiReturn {
   status: number;
   data: any;
@@ -28,6 +29,7 @@ export function* authLoginHandler({
     password: string;
   };
 }) {
+  yield put(toggleLoading(true));
   try {
     const res: IApiReturn = yield call(loginService, payload);
     if (res.status === 200) {
@@ -41,9 +43,16 @@ export function* authLoginHandler({
       Router.push({
         pathname: "/",
       });
+    } else {
+      console.log(res);
     }
   } catch (error) {
-    console.log(error);
+    toast.error(error.response.data.message, {
+      hideProgressBar: true,
+      autoClose: 500,
+    });
+  } finally {
+    yield put(toggleLoading(false));
   }
 }
 

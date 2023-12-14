@@ -7,7 +7,7 @@ import { Input, Form } from "antd";
 import Button from "@/component/button/Button";
 import Router from "next/router";
 import { loginService } from "@/store/services/auth.services";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/store/configureStore";
 import { login } from "@/store/auth/authSlice";
 
@@ -17,13 +17,16 @@ type FieldType = {
 };
 
 function LoginPage() {
-  const [loading, setLoading] = useState<boolean>(false);
+  const { loading } = useSelector((state) => state.loading);
   const dispatch = useDispatch<AppDispatch>();
 
   const onSubmit = async (value: FieldType) => {
-    dispatch(login(value));
+    try {
+      dispatch(login(value));
+    } catch (error) {
+      console.log(error);
+    }
   };
-
   return (
     <div className={styles.mainWrapper}>
       <div className={styles.loginWrapper}>

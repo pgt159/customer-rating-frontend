@@ -22,9 +22,7 @@ export const authSlice = createSlice({
     logOut: () => {
       return initialState;
     },
-    login: (state, action) => {
-      console.log(action);
-    },
+    login: (state, action) => {},
     signup: (state, action) => ({
       ...state,
       ...action.payload,

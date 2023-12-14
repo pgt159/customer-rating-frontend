@@ -3,6 +3,7 @@ import React, { Fragment, useCallback, useEffect, useState } from "react";
 import styles from "../../styles/rating.module.scss";
 import ButtonStar from "../../component/buttonStar/ButtonStar";
 import Button from "../../component/button/Button";
+
 import {
   createRating,
   getTodayRatingService,
@@ -19,33 +20,61 @@ function RatingPage() {
   const [ratingPoint, setRatingPoint] = useState<number>(0);
   const [ratingId, setRatingId] = useState<string>(null);
 
-  const onHover = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>, number) => {
-      const elId = e?.target?.dataset?.id || number;
-      listButton.forEach((item) => {
-        const itemId = item.dataset.id;
+  useEffect(() => {
+    const isLogin = localStorage.getItem("authentication") || getToken();
+    if (!isLogin) {
+      Router.push("/auth");
+    }
 
-        if (parseInt(itemId || -1) <= parseInt(elId || 0)) {
-          item.children[0].children[0].setAttribute("fill", "#B72EF2");
-          item.children[0].children[0].setAttribute("stroke", "#F2B6E2");
+    const listEl = Array.from(document.querySelectorAll(".button-star"));
+    if (listEl && listEl.length > 0) {
+      setListButton(listEl);
+    }
+  }, []);
+
+  useEffect(() => {
+    const getTodayRating = async () => {
+      try {
+        const response = await getTodayRatingService();
+        if (response.status == 200 && response?.data?.data?.length) {
+          const data = response?.data?.data[0];
+          setRatingPoint(data.rating);
+          setRatingId(data._id);
+          onHover(null, data.rating);
+          onMouseOut({ number: data.rating });
+          const descriptionEl = document.querySelector("#desc");
+          descriptionEl.value = data.description;
         }
-      });
-    },
-    [listButton]
-  );
-  const onMouseOut = useCallback(
-    ({ number }: { number?: number }) => {
-      listButton.forEach((item) => {
-        const elId = parseInt(item.dataset.id);
-        if (elId > (number || ratingPoint || -1)) {
-          const path = item.children[0].children[0];
-          path.removeAttribute("fill");
-          path.setAttribute("stroke", "#F2B6E2");
-        }
-      });
-    },
-    [listButton, ratingPoint]
-  );
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getTodayRating();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [listButton]);
+
+  const onHover = (e: React.MouseEvent<HTMLButtonElement>, number) => {
+    const elId = e?.target?.dataset?.id || number;
+    listButton.forEach((item) => {
+      const itemId = item.dataset.id;
+
+      if (parseInt(itemId || -1) <= parseInt(elId || 0)) {
+        item.children[0].children[0].setAttribute("fill", "#B72EF2");
+        item.children[0].children[0].setAttribute("stroke", "#F2B6E2");
+      }
+    });
+  };
+
+  const onMouseOut = ({ number }: { number?: number }) => {
+    listButton.forEach((item) => {
+      const elId = parseInt(item.dataset.id);
+      if (elId > (number || ratingPoint || -1)) {
+        const path = item.children[0].children[0];
+        path.removeAttribute("fill");
+        path.setAttribute("stroke", "#F2B6E2");
+      }
+    });
+  };
 
   const onRating = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (e) {
@@ -79,38 +108,6 @@ function RatingPage() {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    const isLogin = localStorage.getItem("authentication") || getToken();
-    if (!isLogin) {
-      Router.push("/auth");
-    }
-
-    const listEl = Array.from(document.querySelectorAll(".button-star"));
-    if (listEl && listEl.length > 0) {
-      setListButton(listEl);
-    }
-  }, []);
-
-  useEffect(() => {
-    const getTodayRating = async () => {
-      try {
-        const response = await getTodayRatingService();
-        if (response.status == 200 && response?.data?.data?.length) {
-          const data = response?.data?.data[0];
-          setRatingPoint(data.rating);
-          setRatingId(data._id);
-          onHover(null, data.rating);
-          onMouseOut({ number: data.rating });
-          const descriptionEl = document.querySelector("#desc");
-          descriptionEl.value = data.description;
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getTodayRating();
-  }, [listButton, onHover, onMouseOut]);
 
   return (
     <LayoutMain>

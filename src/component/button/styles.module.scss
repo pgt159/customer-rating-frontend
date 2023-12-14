@@ -3,6 +3,10 @@
   background-color: #ebf5ff;
   padding: 10px 8px;
   width: 100px;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+
   .titleStyle {
     color: #0080ff;
     transition: 0.3s ease all;

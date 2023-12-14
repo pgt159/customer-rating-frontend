@@ -1,5 +1,7 @@
 import React from "react";
 import styles from "./styles.module.scss";
+import { Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 
 interface IButton
   extends React.DetailedHTMLProps<
@@ -21,7 +23,16 @@ function Button({ onClick, title, loading, ...props }: IButton) {
         opacity: loading || props.disabled ? 0.7 : 1,
       }}
     >
-      {loading ? <div></div> : null}
+      {loading ? (
+        <Spin
+          indicator={
+            <LoadingOutlined style={{ fontSize: 24, marginRight: "10px" }} />
+          }
+          spinning={loading}
+          style={{ color: "#fff" }}
+        />
+      ) : null}
+
       <span className={styles.titleStyle}>{title}</span>
     </button>
   );

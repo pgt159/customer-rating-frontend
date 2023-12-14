@@ -6,6 +6,13 @@ import type { DocumentContext } from "next/document";
 const MyDocument = () => (
   <Html lang="en">
     <Head />
+    <link
+      as="style"
+      rel="stylesheet preload prefetch"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500;700;800&display=swap"
+      type="text/css"
+      crossOrigin="anonymous"
+    />
     <body>
       <Main />
       <NextScript />

@@ -26,7 +26,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <ConfigProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
           <ToastContainer
-            autoClose={100}
+            autoClose={500}
             hideProgressBar={false}
             closeOnClick
             limit={1}

@@ -6,7 +6,6 @@ const axiosCreate = axios.create({
   headers: {
     Accept: "application/json,application/x-www-form-urlencoded,text/plain,*/*",
     "Content-Type": "application/json;charset=utf-8",
-    Cookie: getToken(),
   },
 });
 
