@@ -1,7 +1,9 @@
 import { API_URL } from "@/configs/constants";
 import axios from "axios";
 import ApiMethod from "@/utility/ApiMethod";
-export const getAllRatings = () => {};
+export const getAllRatings = () => {
+  return ApiMethod.get("rating");
+};
 
 export const updateRating = async ({
   description,

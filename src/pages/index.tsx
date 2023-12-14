@@ -5,6 +5,7 @@ import Button from "@/component/button/Button";
 import Router from "next/router";
 import { useSelector } from "react-redux";
 import { useAppSelector } from "@/store/configureStore";
+import RatingList from "@/component/ratingList/RatingList";
 
 export default function Home() {
   const { isAuth } = useAppSelector((state: { auth: any }) => state.auth);
@@ -20,17 +21,20 @@ export default function Home() {
     <LayoutMain>
       <div className={styles.homeWrapper}>
         {isAuth ? (
-          <div className={styles.sloganWrapper}>
-            <span className={styles.title}>Hey there,</span>
-            <span className={styles.slogan}>Problem solving is easy</span>
-            <span className={styles.subSlogan}>
-              You tell me your feelings, I take care of it
-            </span>
-            <Button
-              onClick={onGoRating}
-              title={"Rate your day!"}
-              className={styles.ratingButton}
-            />
+          <div>
+            {/* <RatingList /> */}
+            <div className={styles.sloganWrapper}>
+              <span className={styles.title}>Hey there,</span>
+              <span className={styles.slogan}>Problem solving is easy</span>
+              <span className={styles.subSlogan}>
+                You tell me your feelings, I take care of it
+              </span>
+              <Button
+                onClick={onGoRating}
+                title={"Rate your day!"}
+                className={styles.ratingButton}
+              />
+            </div>
           </div>
         ) : (
           <div className={styles.sloganWrapper}>
